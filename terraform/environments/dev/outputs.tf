@@ -30,3 +30,27 @@ output "eks_node_iam_role_arn" {
   value       = module.eks.node_iam_role_arn
 }
 
+output "eks_oidc_provider_arn" {
+  description = "IAM OIDC provider ARN for EKS"
+  value       = module.eks.oidc_provider_arn
+}
+
+output "eks_oidc_issuer_url" {
+  description = "OIDC issuer URL for the EKS cluster"
+  value       = module.eks.oidc_issuer_url
+}
+
+module "aws_load_balancer_controller" {
+  source = "../../modules/aws-load-balancer-controller"
+
+  project_name = var.project_name
+  environment  = var.environment
+
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  oidc_issuer_url   = module.eks.oidc_issuer_url
+}
+
+output "aws_load_balancer_controller_role_arn" {
+  description = "IRSA role used by the AWS Load Balancer Controller"
+  value       = module.aws_load_balancer_controller.iam_role_arn
+}
