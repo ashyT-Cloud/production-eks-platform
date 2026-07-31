@@ -28,3 +28,12 @@ module "vpc" {
     }
   }
 }
+
+module "eks" {
+  source = "../../modules/eks"
+
+  project_name       = var.project_name
+  environment        = var.environment
+  cluster_version    = "1.36"
+  private_subnet_ids = module.vpc.private_subnet_ids
+}
