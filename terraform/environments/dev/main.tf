@@ -54,3 +54,14 @@ module "ecr" {
     }
   }
 }
+
+
+module "github_oidc" {
+  source = "../../modules/github-oidc"
+
+  project_name = var.project_name
+  environment  = var.environment
+
+  github_owner      = "ashyT-Cloud"
+  github_repository = "production-eks-platform"
+}
