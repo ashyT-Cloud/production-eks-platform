@@ -13,8 +13,7 @@ variable "github_owner" {
   type        = string
 }
 
-variable "github_repository" {
-  description = "GitHub Repository name"
-  type        = string
+variable "github_repositories" {
+  description = "GitHub repositories allowed to assume this IAM role"
+  type        = list(string)
 }
-
