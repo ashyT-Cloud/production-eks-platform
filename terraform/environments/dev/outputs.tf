@@ -54,3 +54,9 @@ output "aws_load_balancer_controller_role_arn" {
   description = "IRSA role used by the AWS Load Balancer Controller"
   value       = module.aws_load_balancer_controller.iam_role_arn
 }
+
+output "ecr_repository_urls" {
+  description = "ECR repository URLs"
+
+  value = module.ecr.repository_urls
+}

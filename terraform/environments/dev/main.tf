@@ -37,3 +37,20 @@ module "eks" {
   cluster_version    = "1.36"
   private_subnet_ids = module.vpc.private_subnet_ids
 }
+
+module "ecr" {
+  source = "../../modules/ecr"
+
+  project_name = var.project_name
+  environment  = var.environment
+
+  repositories = {
+    fittrack-frontend = {
+      scan_on_push = true
+    }
+
+    fittrack-backend = {
+      scan_on_push = true
+    }
+  }
+}
