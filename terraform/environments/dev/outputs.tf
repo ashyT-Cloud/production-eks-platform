@@ -60,3 +60,9 @@ output "ecr_repository_urls" {
 
   value = module.ecr.repository_urls
 }
+
+output "github_actions_role_arn" {
+  description = "IAM Role ARN used by GitHub Actions"
+
+  value = module.github_oidc.github_actions_role_arn
+}
