@@ -1,0 +1,57 @@
+backend:
+  replicaCount: 2
+
+  image:
+    repository: 487054650859.dkr.ecr.us-east-1.amazonaws.com/production-eks-platform/fittrack-backend
+    tag: 4d8b987
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 3000
+
+frontend:
+  replicaCount: 2
+
+  image:
+    repository: 487054650859.dkr.ecr.us-east-1.amazonaws.com/production-eks-platform/fittrack-frontend
+    tag: b591eb4
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 80
+
+mongodb:
+  replicaCount: 1
+
+  image:
+    repository: mongo
+    tag: "7.0"
+    pullPolicy: IfNotPresent
+
+  auth:
+    username: admin
+    password: admin123
+    database: fittrack
+
+  service:
+    type: ClusterIP
+    port: 27017
+
+ingress:
+  enabled: true
+
+  className: alb
+
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+
+  frontend:
+    path: /
+    pathType: Prefix
+
+  backend:
+    path: /api
+    pathType: Prefix

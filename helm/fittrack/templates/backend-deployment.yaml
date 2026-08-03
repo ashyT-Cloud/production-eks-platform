@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ include "fittrack.fullname" . }}-backend
+  labels:
+    {{- include "fittrack.labels" . | nindent 4 }}
+
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: backend
+
+  template:
+    metadata:
+      labels:
+        app: backend
+
+    spec:
+      containers:
+        - name: backend
+
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: fittrack-config
+                  key: port
+
+            - name: MONGO_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: fittrack-config
+                  key: database
+
+            - name: MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: username
+
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: password
+
+          ports:
+            - containerPort: {{ .Values.backend.service.port }}
